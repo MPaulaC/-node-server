@@ -5,7 +5,7 @@ const tareas = [];
 
 // Función para agregar una tarea
 function agregarTarea() {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
         const indicador = readline.question('Indicador de la tarea: ');
         const descripcion = readline.question('Descripción de la tarea: ');
         const estado = readline.keyInYN('¿Completada? (y/n): ') ? 'completada' : 'pendiente';
@@ -50,14 +50,31 @@ function completarTarea() {
     });
 }
 
-// ... (las demás funciones se mantienen igual)
+// Función para mostrar todas las tareas
+function mostrarTareas() {
+    return new Promise((resolve) => {
+        if (tareas.length === 0) {
+            console.log('La lista de tareas está vacía.');
+        } else {
+            console.log('Lista de tareas:');
+            tareas.forEach(tarea => {
+                console.log(`- Indicador: ${tarea.indicador}, Descripción: ${tarea.descripcion}, Estado: ${tarea.estado}`);
+            });
+        }
+        resolve();
+    });
+}
 
 // Función principal
 async function main() {
     console.log('=== Gestión de Tareas ===');
 
     while (true) {
-        // ... (opciones del menú)
+        console.log('\n1. Agregar tarea');
+        console.log('2. Eliminar tarea');
+        console.log('3. Completar tarea');
+        console.log('4. Mostrar tareas');
+        console.log('5. Salir');
 
         const opcion = readline.questionInt('Elige una opción: ');
 
@@ -71,7 +88,14 @@ async function main() {
             case 3:
                 await completarTarea();
                 break;
-            // ... (otras opciones)
+            case 4:
+                await mostrarTareas();
+                break;
+            case 5:
+                console.log('¡Hasta luego!');
+                return;
+            default:
+                console.log('Opción inválida. Intenta de nuevo.');
         }
     }
 }
